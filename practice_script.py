@@ -1,5 +1,6 @@
-from QuoteEngine.ingestors import CSVImporter
+from QuoteEngine.ingestors import CSVImporter, DOCXImporter, TXTImporter
 
-listik = CSVImporter.parse()
-for q in listik:
-    print(q)
+listik = TXTImporter.parse()
+
+for el in listik:
+    print(el)

@@ -1,6 +1,9 @@
 import csv
+import subprocess
 from abc import ABC, abstractmethod
 from typing import List
+
+from docx import Document
 
 from QuoteEngine.quote_model import QuoteModel
 
@@ -39,18 +42,40 @@ class CSVImporter(IngestorInterFace):
 
 
 class DOCXImporter(IngestorInterFace):
-    pass
+    allowed_extensions = ["docx"]
 
+    @classmethod
+    def parse(cls, path: str = "DogQuotes/DogQuotesDOCX.docx") -> List[QuoteModel]:
+        if not cls.can_ingest(path=path):
+            raise Exception("Cannot ingest.")
 
-class PDFImporter(IngestorInterFace):
-    pass
+        document = Document(path)
+        return [
+            QuoteModel.model_from_whole_quote(par.text)
+            for par in document.paragraphs
+            if par.text != ""
+        ]
 
 
 class TXTImporter(IngestorInterFace):
-    pass
+    allowed_extensions = ["txt"]
+
+    @classmethod
+    def parse(cls, path: str = "DogQuotes/DogQuotesTXT.txt") -> List[QuoteModel]:
+        with open(path, "r") as infile:
+            return [QuoteModel.model_from_whole_quote(row) for row in infile]
 
 
-class Importer(IngestorInterFace):
+class PDFImporter(IngestorInterFace):
+    allowed_extensions = ["pdf"]
+
+    @classmethod
+    def parse(cls, path: str = "DogQuotes/DogQuotesPDF.PDF") -> List[QuoteModel]:
+        "convert to text via subprocess and parse it as txt"
+        pass
+
+
+class Ingestor(IngestorInterFace):
     IMPORTERS = [CSVImporter, DOCXImporter, PDFImporter, TXTImporter]
 
     @classmethod
