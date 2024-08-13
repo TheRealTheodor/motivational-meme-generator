@@ -1,5 +1,6 @@
 import csv
 import subprocess
+import uuid
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -70,9 +71,13 @@ class PDFImporter(IngestorInterFace):
     allowed_extensions = ["pdf"]
 
     @classmethod
-    def parse(cls, path: str = "DogQuotes/DogQuotesPDF.PDF") -> List[QuoteModel]:
-        "convert to text via subprocess and parse it as txt"
-        pass
+    def parse(cls, path: str = "DogQuotes/DogQuotesPDF.pdf") -> List[QuoteModel]:
+        output_path = "tmp/" + str(uuid.uuid4()) + ".txt"
+        subprocess.run(["mkdir", "tmp"])
+        subprocess.run(["pdftotext", "-raw", "-nopgbrk", path, output_path])
+        list_from_txt_importer = TXTImporter.parse(path=output_path)
+        subprocess.run(["rm", "-rf", "tmp"])
+        return list_from_txt_importer
 
 
 class Ingestor(IngestorInterFace):
