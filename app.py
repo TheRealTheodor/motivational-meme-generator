@@ -7,7 +7,7 @@ from flask import Flask, render_template, abort, request
 
 app = Flask(__name__)
 
-meme = MemeEngine("./static")
+# meme = MemeEngine("./static")
 
 
 def setup():
@@ -47,8 +47,9 @@ def meme_rand():
 
     img = None
     quote = None
-    path = meme.make_meme(img, quote.body, quote.author)
-    return render_template("meme.html", path=path)
+    # path = meme.make_meme(img, quote.body, quote.author)
+    # return render_template("meme.html", path=path)
+    return "ahoj"
 
 
 @app.route("/create", methods=["GET"])
