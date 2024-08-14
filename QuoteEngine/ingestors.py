@@ -1,3 +1,5 @@
+"""This module contains abstract IngestorInterface and children ingestors for different file types."""
+
 import csv
 import subprocess
 import uuid
@@ -16,20 +18,34 @@ class IngestorInterFace(ABC):
 
     @classmethod
     def can_ingest(cls, path: str) -> bool:
+        """Check whether the ingestor class can ingest given file type.
+
+        :param path: A path string to file.
+        """
         extension = path.split(".")[-1]
         return extension in cls.allowed_extensions
 
     @classmethod
     @abstractmethod
     def parse(cls, path: str = "DogQuotes/DogQuotesCSV.csv") -> List[QuoteModel]:
+        """Abstract method to be implemented in children classes.
+
+        :param path: A path string to file.
+        """
         pass
 
 
 class CSVImporter(IngestorInterFace):
+    """Class to import quotes from .csv files."""
+
     allowed_extensions = ["csv"]
 
     @classmethod
     def parse(cls, path: str = "DogQuotes/DogQuotesCSV.csv") -> List[QuoteModel]:
+        """Parse the information contained in row into QuoteModel.
+
+        :param path: A path string to file.
+        """
         if not cls.can_ingest(path=path):
             raise Exception("Cannot ingest.")
 
@@ -43,10 +59,16 @@ class CSVImporter(IngestorInterFace):
 
 
 class DOCXImporter(IngestorInterFace):
+    """Class to import quotes from .docs files."""
+
     allowed_extensions = ["docx"]
 
     @classmethod
     def parse(cls, path: str = "DogQuotes/DogQuotesDOCX.docx") -> List[QuoteModel]:
+        """Parse the information contained in docx document into QuoteModel.
+
+        :param path: A path string to file.
+        """
         if not cls.can_ingest(path=path):
             raise Exception("Cannot ingest.")
 
@@ -59,19 +81,31 @@ class DOCXImporter(IngestorInterFace):
 
 
 class TXTImporter(IngestorInterFace):
+    """Class to import quotes from .txt files."""
+
     allowed_extensions = ["txt"]
 
     @classmethod
     def parse(cls, path: str = "DogQuotes/DogQuotesTXT.txt") -> List[QuoteModel]:
+        """Parse the information contained in row into QuoteModel.
+
+        :param path: A path string to file.
+        """
         with open(path, "r") as infile:
             return [QuoteModel.model_from_whole_quote(row) for row in infile]
 
 
 class PDFImporter(IngestorInterFace):
+    """Class to import quotes from .pdf files."""
+
     allowed_extensions = ["pdf"]
 
     @classmethod
     def parse(cls, path: str = "DogQuotes/DogQuotesPDF.pdf") -> List[QuoteModel]:
+        """Convert the .pdf file into a .txt file and use TXTImporter to import.
+
+        :param path: A path string to file.
+        """
         output_path = "tmp/" + str(uuid.uuid4()) + ".txt"
         subprocess.run(["mkdir", "tmp"])
         subprocess.run(["pdftotext", "-raw", "-nopgbrk", path, output_path])
@@ -81,10 +115,16 @@ class PDFImporter(IngestorInterFace):
 
 
 class Ingestor(IngestorInterFace):
+    """General class to use importers for given file type."""
+
     IMPORTERS = [CSVImporter, DOCXImporter, PDFImporter, TXTImporter]
 
     @classmethod
     def parse(cls, path: str = "DogQuotes/DogQuotesCSV.csv") -> List[QuoteModel]:
+        """Use relevant importer for given file type.
+
+        :param path: A path string to file.
+        """
         for importer in cls.IMPORTERS:
             if importer.can_ingest(path=path):
                 return importer.parse(path=path)
