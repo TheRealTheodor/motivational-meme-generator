@@ -41,7 +41,7 @@ class CSVImporter(IngestorInterFace):
     allowed_extensions = ["csv"]
 
     @classmethod
-    def parse(cls, path: str = "DogQuotes/DogQuotesCSV.csv") -> List[QuoteModel]:
+    def parse(cls, path: str = "_data/DogQuotes/DogQuotesCSV.csv") -> List[QuoteModel]:
         """Parse the information contained in row into QuoteModel.
 
         :param path: A path string to file.
@@ -64,7 +64,9 @@ class DOCXImporter(IngestorInterFace):
     allowed_extensions = ["docx"]
 
     @classmethod
-    def parse(cls, path: str = "DogQuotes/DogQuotesDOCX.docx") -> List[QuoteModel]:
+    def parse(
+        cls, path: str = "_data/DogQuotes/DogQuotesDOCX.docx"
+    ) -> List[QuoteModel]:
         """Parse the information contained in docx document into QuoteModel.
 
         :param path: A path string to file.
@@ -86,7 +88,7 @@ class TXTImporter(IngestorInterFace):
     allowed_extensions = ["txt"]
 
     @classmethod
-    def parse(cls, path: str = "DogQuotes/DogQuotesTXT.txt") -> List[QuoteModel]:
+    def parse(cls, path: str = "_data/DogQuotes/DogQuotesTXT.txt") -> List[QuoteModel]:
         """Parse the information contained in row into QuoteModel.
 
         :param path: A path string to file.
@@ -101,7 +103,7 @@ class PDFImporter(IngestorInterFace):
     allowed_extensions = ["pdf"]
 
     @classmethod
-    def parse(cls, path: str = "DogQuotes/DogQuotesPDF.pdf") -> List[QuoteModel]:
+    def parse(cls, path: str = "_data/DogQuotes/DogQuotesPDF.pdf") -> List[QuoteModel]:
         """Convert the .pdf file into a .txt file and use TXTImporter to import.
 
         :param path: A path string to file.
@@ -120,7 +122,7 @@ class Ingestor(IngestorInterFace):
     IMPORTERS = [CSVImporter, DOCXImporter, PDFImporter, TXTImporter]
 
     @classmethod
-    def parse(cls, path: str = "DogQuotes/DogQuotesCSV.csv") -> List[QuoteModel]:
+    def parse(cls, path: str = "_data/DogQuotes/DogQuotesCSV.csv") -> List[QuoteModel]:
         """Use relevant importer for given file type.
 
         :param path: A path string to file.
