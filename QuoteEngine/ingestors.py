@@ -54,7 +54,7 @@ class CSVImporter(IngestorInterFace):
             whole_list.pop(0)
             list_of_quotes = []
             for quote in whole_list:
-                list_of_quotes.append(QuoteModel(quote=quote[0], author=quote[-1]))
+                list_of_quotes.append(QuoteModel(body=quote[0], author=quote[-1]))
             return list_of_quotes
 
 
