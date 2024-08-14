@@ -1,5 +1,4 @@
-from QuoteEngine.ingestors import (CSVImporter, DOCXImporter, PDFImporter,
-                                   TXTImporter)
+from QuoteEngine.ingestors import CSVImporter, DOCXImporter, PDFImporter, TXTImporter
 
 listik = PDFImporter.parse()
 

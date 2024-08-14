@@ -1,3 +1,5 @@
+"""Script for generating meme."""
+
 import os
 import random
 
@@ -5,16 +7,13 @@ from MemeGenerator.meme_generator import MemeEngine
 from QuoteEngine.ingestors import Ingestor
 from QuoteEngine.quote_model import QuoteModel
 
-# @TODO Import your Ingestor and MemeEngine classes
-
 
 def generate_meme(path=None, body=None, author=None):
-    """Generate a meme given an path and a quote"""
-
+    """Generate a meme given an path and a quote."""
     if path is None:
         images = "./_data/photos/dog/"
         imgs = []
-        for root, dirs, files in os.walk(images):
+        for root, _, files in os.walk(images):
             imgs = [os.path.join(root, name) for name in files]
 
         img = random.choice(imgs)

@@ -1,3 +1,5 @@
+"""Module with MemeEngine class used for generating captioned memes."""
+
 import random
 import uuid
 
@@ -7,11 +9,22 @@ from QuoteEngine.quote_model import QuoteModel
 
 
 class MemeEngine:
+    """Class to create captioned photos with quotes."""
 
     def __init__(self, output_folder) -> None:
+        """Initialize new instance of MemeEngine.
+
+        :param output_folder: Path string to folder where the meme will be saved.
+        """
         self._output_folder = output_folder
 
     def make_meme(self, image_path: str, quote: QuoteModel, width=500) -> str:
+        """Create a meme with body of quote and its author.
+
+        :param image_path: Path string to image from which the meme will be made.
+        :param quote: QuoteModel class containing the body of quote and author.
+        :param width: Maximum width of captioned meme.
+        """
         image = Image.open(image_path)
         new_height = (width / image.size[0]) * image.size[-1]
         resized_image = image.resize(size=(width, new_height))
