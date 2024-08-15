@@ -44,15 +44,6 @@ def meme_form():
 def meme_post():
     """Create a user defined meme"""
 
-    # @TODO:
-    # 1. Use requests to save the image from the image_url
-    #    form param to a temp local file.
-    # 2. Use the meme object to generate a meme using this temp
-    #    file and the body and author form paramaters.
-    # 3. Remove the temporary saved image.
-
-    # https://images.ctfassets.net/2y9b3o528xhq/4swf2qhcelEUWzKHaKne6C/d890de3220ea332fb42e9b8e5f7848fd/real-world-projects.png
-    # https://images.ctfassets.net/2y9b3o528xhq/5sXS0Rr3MEr66P5elfYX7P/3728cc2d85c0979cb29d5cb291369038/mentor.jpg
     image_url = request.form.get("image_url")
     image_extension = "." + image_url.split(".")[-1]
     temp_folder = "./tmp/"
@@ -67,6 +58,8 @@ def meme_post():
         path = meme.make_meme(image_path=full_path, quote=quote)
         os.remove(full_path)
         os.rmdir(temp_folder)
+    else:
+        abort(code=response.status_code)
     return render_template("meme.html", path=path)
 
 

@@ -1,4 +1,4 @@
-"""Module containing a class for random image picker."""
+"""Module containing a class for file handler."""
 
 import os
 import random
@@ -9,6 +9,8 @@ from QuoteEngine.quote_model import QuoteModel
 
 
 class FileHandler:
+    """Class to handle files operations for this project."""
+
     QUOTE_FILES = [
         "./_data/DogQuotes/DogQuotesTXT.txt",
         "./_data/DogQuotes/DogQuotesDOCX.docx",
@@ -18,6 +20,7 @@ class FileHandler:
 
     @classmethod
     def pick_image(cls, folder_path: str) -> str:
+        """Pick random image for given folder path."""
         imgs = []
         for root, _, files in os.walk(folder_path):
             imgs = [os.path.join(root, name) for name in files]
@@ -27,11 +30,13 @@ class FileHandler:
 
     @classmethod
     def list_all_images(cls, folder_path: str = "./_data/photos/dog/") -> List[str]:
+        """List all images available for given path."""
         img_list = os.listdir(path=folder_path)
         return [folder_path + img for img in img_list]
 
     @classmethod
     def list_of_all_available_quotes(cls) -> List[QuoteModel]:
+        """Create list of all available quotes saved in different files."""
         quotes = []
         for quote_file in cls.QUOTE_FILES:
             quotes.extend(Ingestor.parse(quote_file))

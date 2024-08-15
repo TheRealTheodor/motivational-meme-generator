@@ -2,7 +2,6 @@
 
 import os
 import random
-import subprocess
 import uuid
 
 from PIL import Image, ImageDraw, ImageFont
@@ -21,13 +20,15 @@ class MemeEngine:
         self._output_folder = output_folder
 
     def check_existing_folder(self) -> bool:
+        """Check if the output folder of instance of MemeEngine exists."""
         listed_files = os.listdir()
         if self._output_folder.removeprefix("./") in listed_files:
             return True
         return False
 
     def create_folder(self) -> None:
-        subprocess.run(["mkdir", self._output_folder.removeprefix("./")])
+        """Create output folder."""
+        os.mkdir(self._output_folder)
 
     def make_meme(self, image_path: str, quote: QuoteModel, width=500) -> str:
         """Create a meme with body of quote and its author.
@@ -36,13 +37,16 @@ class MemeEngine:
         :param quote: QuoteModel class containing the body of quote and author.
         :param width: Maximum width of captioned meme.
         """
+        file_extension = "." + image_path.split(".")[-1]
         image = Image.open(image_path)
         new_height = (width / image.size[0]) * image.size[-1]
         resized_image = image.resize(size=(int(width), int(new_height)))
         my_font = ImageFont.truetype(
             "/usr/share/fonts/truetype/ubuntu/UbuntuMono-R.ttf", 15
         )
-        path_to_output_image = self._output_folder + "/" + str(uuid.uuid4()) + ".jpeg"
+        path_to_output_image = (
+            self._output_folder + "/" + str(uuid.uuid4()) + file_extension
+        )
         draw_resized_image = ImageDraw.Draw(resized_image)
         draw_resized_image.text(
             (

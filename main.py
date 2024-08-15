@@ -1,12 +1,10 @@
 """Script for generating meme."""
 
 import argparse
-import os
 import random
 
 from MemeGenerator.file_handler import FileHandler
 from MemeGenerator.meme_generator import MemeEngine
-from QuoteEngine.ingestors import Ingestor
 from QuoteEngine.quote_model import QuoteModel
 
 

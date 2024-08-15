@@ -109,7 +109,6 @@ class PDFImporter(IngestorInterFace):
 
         :param path: A path string to file.
         """
-
         temp_folder = "./tmp"
         output_path = temp_folder + str(uuid.uuid4()) + ".txt"
         os.mkdir(temp_folder)
