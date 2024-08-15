@@ -6,7 +6,7 @@ import random
 from MemeGenerator.meme_generator import MemeEngine
 from QuoteEngine.ingestors import Ingestor
 from QuoteEngine.quote_model import QuoteModel
-from MemeGenerator.file_picker import FileHandler
+from MemeGenerator.file_handler import FileHandler
 import argparse
 
 

@@ -5,7 +5,7 @@ import requests
 from flask import Flask, abort, render_template, request
 from MemeGenerator.meme_generator import MemeEngine
 
-from MemeGenerator.file_picker import FileHandler
+from MemeGenerator.file_handler import FileHandler
 
 app = Flask(__name__)
 
