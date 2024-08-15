@@ -1,6 +1,3 @@
-from QuoteEngine.ingestors import CSVImporter, DOCXImporter, PDFImporter, TXTImporter
+from MemeGenerator.file_picker import FileHandler
 
-listik = PDFImporter.parse()
-
-for el in listik:
-    print(el)
+path = FileHandler.pick_image("./_data/photos/dog/")

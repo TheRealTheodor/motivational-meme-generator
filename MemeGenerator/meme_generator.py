@@ -2,7 +2,8 @@
 
 import random
 import uuid
-
+import subprocess
+import os
 from PIL import Image, ImageDraw, ImageFont
 
 from QuoteEngine.quote_model import QuoteModel
@@ -18,6 +19,15 @@ class MemeEngine:
         """
         self._output_folder = output_folder
 
+    def check_existing_folder(self) -> bool:
+        listed_files = os.listdir()
+        if self._output_folder.removeprefix("./") in listed_files:
+            return True
+        return False
+
+    def create_folder(self) -> None:
+        subprocess.run(["mkdir", self._output_folder.removeprefix("./")])
+
     def make_meme(self, image_path: str, quote: QuoteModel, width=500) -> str:
         """Create a meme with body of quote and its author.
 
@@ -31,7 +41,7 @@ class MemeEngine:
         my_font = ImageFont.truetype(
             "/usr/share/fonts/truetype/ubuntu/UbuntuMono-R.ttf", 15
         )
-        path_to_output_image = self._output_folder + str(uuid.uuid4()) + ".jpeg"
+        path_to_output_image = self._output_folder + "/" + str(uuid.uuid4()) + ".jpeg"
         draw_resized_image = ImageDraw.Draw(resized_image)
         draw_resized_image.text(
             (
@@ -42,5 +52,9 @@ class MemeEngine:
             font=my_font,
             fill=(255, 255, 255),
         )
-        resized_image.save(path_to_output_image)
+        if self.check_existing_folder():
+            resized_image.save(path_to_output_image)
+        else:
+            self.create_folder()
+            resized_image.save(path_to_output_image)
         return path_to_output_image
