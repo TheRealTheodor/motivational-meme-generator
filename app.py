@@ -1,6 +1,9 @@
+"""File for flask for running flask applicaation."""
+
 import os
 import random
 import uuid
+from typing import List, Tuple
 
 import requests
 from flask import Flask, abort, render_template, request
@@ -14,9 +17,8 @@ app = Flask(__name__)
 meme = MemeEngine("./static")
 
 
-def setup():
-    """Load all resources"""
-
+def setup() -> Tuple[List[QuoteModel], List[str]]:
+    """Load all resources."""
     quotes = FileHandler.list_of_all_available_quotes()
     imgs = FileHandler.list_all_images()
     return quotes, imgs
@@ -27,7 +29,7 @@ quotes, imgs = setup()
 
 @app.route("/")
 def meme_rand():
-    """Generate a random meme"""
+    """Generate a random meme."""
     img = random.choice(imgs)
     quote = random.choice(quotes)
     path = meme.make_meme(image_path=img, quote=quote)
@@ -36,14 +38,13 @@ def meme_rand():
 
 @app.route("/create", methods=["GET"])
 def meme_form():
-    """User input for meme information"""
+    """User input for meme information."""
     return render_template("meme_form.html")
 
 
 @app.route("/create", methods=["POST"])
 def meme_post():
-    """Create a user defined meme"""
-
+    """Create a user defined meme."""
     image_url = request.form.get("image_url")
     image_extension = "." + image_url.split(".")[-1]
     temp_folder = "./tmp/"
