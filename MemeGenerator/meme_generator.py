@@ -1,9 +1,10 @@
 """Module with MemeEngine class used for generating captioned memes."""
 
-import random
-import uuid
-import subprocess
 import os
+import random
+import subprocess
+import uuid
+
 from PIL import Image, ImageDraw, ImageFont
 
 from QuoteEngine.quote_model import QuoteModel
@@ -37,7 +38,7 @@ class MemeEngine:
         """
         image = Image.open(image_path)
         new_height = (width / image.size[0]) * image.size[-1]
-        resized_image = image.resize(size=(width, new_height))
+        resized_image = image.resize(size=(int(width), int(new_height)))
         my_font = ImageFont.truetype(
             "/usr/share/fonts/truetype/ubuntu/UbuntuMono-R.ttf", 15
         )

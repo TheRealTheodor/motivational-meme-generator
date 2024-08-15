@@ -1,10 +1,11 @@
 """Module containing a class for random image picker."""
 
+import os
 import random
 from typing import List
-import os
-from QuoteEngine.quote_model import QuoteModel
+
 from QuoteEngine.ingestors import Ingestor
+from QuoteEngine.quote_model import QuoteModel
 
 
 class FileHandler:

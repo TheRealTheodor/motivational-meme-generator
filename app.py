@@ -1,11 +1,13 @@
 import os
 import random
+import uuid
 
 import requests
 from flask import Flask, abort, render_template, request
-from MemeGenerator.meme_generator import MemeEngine
 
 from MemeGenerator.file_handler import FileHandler
+from MemeGenerator.meme_generator import MemeEngine
+from QuoteEngine.quote_model import QuoteModel
 
 app = Flask(__name__)
 
@@ -49,8 +51,22 @@ def meme_post():
     #    file and the body and author form paramaters.
     # 3. Remove the temporary saved image.
 
-    path = None
+    # https://images.ctfassets.net/2y9b3o528xhq/4swf2qhcelEUWzKHaKne6C/d890de3220ea332fb42e9b8e5f7848fd/real-world-projects.png
+    # https://images.ctfassets.net/2y9b3o528xhq/5sXS0Rr3MEr66P5elfYX7P/3728cc2d85c0979cb29d5cb291369038/mentor.jpg
+    image_url = request.form.get("image_url")
+    image_extension = "." + image_url.split(".")[-1]
+    temp_folder = "./tmp/"
+    quote = QuoteModel(body=request.form.get("body"), author=request.form.get("author"))
 
+    response = requests.get(image_url)
+    if response.status_code == 200:
+        os.mkdir(temp_folder)
+        full_path = temp_folder + str(uuid.uuid4()) + image_extension
+        with open(full_path, "wb") as outfile:
+            outfile.write(response.content)
+        path = meme.make_meme(image_path=full_path, quote=quote)
+        os.remove(full_path)
+        os.rmdir(temp_folder)
     return render_template("meme.html", path=path)
 
 

@@ -1,3 +1,4 @@
-from MemeGenerator.file_handler import FileHandler
+from QuoteEngine.ingestors import PDFImporter
 
-path = FileHandler.pick_image("./_data/photos/dog/")
+list_of = PDFImporter.parse()
+a = 1

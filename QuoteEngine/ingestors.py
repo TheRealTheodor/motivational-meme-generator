@@ -1,6 +1,7 @@
 """This module contains abstract IngestorInterface and children ingestors for different file types."""
 
 import csv
+import os
 import subprocess
 import uuid
 from abc import ABC, abstractmethod
@@ -108,11 +109,14 @@ class PDFImporter(IngestorInterFace):
 
         :param path: A path string to file.
         """
-        output_path = "tmp/" + str(uuid.uuid4()) + ".txt"
-        subprocess.run(["mkdir", "tmp"])
+
+        temp_folder = "./tmp"
+        output_path = temp_folder + str(uuid.uuid4()) + ".txt"
+        os.mkdir(temp_folder)
         subprocess.run(["pdftotext", "-raw", "-nopgbrk", path, output_path])
         list_from_txt_importer = TXTImporter.parse(path=output_path)
-        subprocess.run(["rm", "-rf", "tmp"])
+        os.remove(output_path)
+        os.rmdir(temp_folder)
         return list_from_txt_importer
 
 
