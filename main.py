@@ -3,7 +3,7 @@
 import argparse
 import random
 
-from MemeGenerator.file_handler import FileHandler
+from FileHandler.file_handler import FileHandler
 from MemeGenerator.meme_generator import MemeEngine
 from QuoteEngine.quote_model import QuoteModel
 

@@ -1,12 +1,11 @@
 """Module with MemeEngine class used for generating captioned memes."""
 
-import os
 import random
 import uuid
 
 from PIL import Image, ImageDraw, ImageFont
 
-from MemeGenerator.file_handler import FileHandler
+from FileHandler.file_handler import FileHandler
 from QuoteEngine.quote_model import QuoteModel
 
 

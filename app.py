@@ -2,13 +2,12 @@
 
 import os
 import random
-import uuid
 from typing import List, Tuple
 
 import requests
 from flask import Flask, abort, render_template, request
 
-from MemeGenerator.file_handler import FileHandler
+from FileHandler.file_handler import FileHandler
 from MemeGenerator.meme_generator import MemeEngine
 from QuoteEngine.ingestors import Ingestor
 from QuoteEngine.quote_model import QuoteModel

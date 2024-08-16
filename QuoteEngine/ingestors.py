@@ -8,7 +8,7 @@ from typing import List
 
 from docx import Document
 
-from MemeGenerator.file_handler import FileHandler
+from FileHandler.file_handler import FileHandler
 from QuoteEngine.quote_model import QuoteModel
 
 
