@@ -1,1 +1,1 @@
-"""Init file for QuoteEngine folder."""
+"""Required __init__.py file."""

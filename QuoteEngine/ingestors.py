@@ -133,3 +133,11 @@ class Ingestor(IngestorInterFace):
         for importer in cls.IMPORTERS:
             if importer.can_ingest(path=path):
                 return importer.parse(path=path)
+
+    @classmethod
+    def list_of_all_available_quotes(cls) -> List[QuoteModel]:
+        """Create list of all available quotes saved in different files."""
+        quotes = []
+        for quote_file in FileHandler.QUOTE_FILES:
+            quotes.extend(cls.parse(quote_file))
+        return quotes

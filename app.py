@@ -17,24 +17,10 @@ app = Flask(__name__)
 meme = MemeEngine("./static")
 
 
-def list_all_images(folder_path: str = "./_data/photos/dog/") -> List[str]:
-    """List all images available for given path."""
-    img_list = os.listdir(path=folder_path)
-    return [folder_path + img for img in img_list]
-
-
-def list_of_all_available_quotes() -> List[QuoteModel]:
-    """Create list of all available quotes saved in different files."""
-    quotes = []
-    for quote_file in FileHandler.QUOTE_FILES:
-        quotes.extend(Ingestor.parse(quote_file))
-    return quotes
-
-
 def setup() -> Tuple[List[QuoteModel], List[str]]:
     """Load all resources."""
-    quotes = list_of_all_available_quotes()
-    imgs = list_all_images()
+    quotes = Ingestor.list_of_all_available_quotes()
+    imgs = FileHandler.list_all_images()
 
     return quotes, imgs
 

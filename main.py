@@ -5,6 +5,7 @@ import random
 
 from FileHandler.file_handler import FileHandler
 from MemeGenerator.meme_generator import MemeEngine
+from QuoteEngine.ingestors import Ingestor
 from QuoteEngine.quote_model import QuoteModel
 
 
@@ -16,7 +17,7 @@ def generate_meme(path=None, body=None, author=None):
         img = path
 
     if body is None:
-        quotes = FileHandler.list_of_all_available_quotes()
+        quotes = Ingestor.list_of_all_available_quotes()
         quote = random.choice(quotes)
     else:
         if author is None:
