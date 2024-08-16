@@ -3,12 +3,12 @@
 import csv
 import os
 import subprocess
-import uuid
 from abc import ABC, abstractmethod
 from typing import List
 
 from docx import Document
 
+from MemeGenerator.file_handler import FileHandler
 from QuoteEngine.quote_model import QuoteModel
 
 
@@ -109,13 +109,13 @@ class PDFImporter(IngestorInterFace):
 
         :param path: A path string to file.
         """
-        temp_folder = "./tmp"
-        output_path = temp_folder + str(uuid.uuid4()) + ".txt"
-        os.mkdir(temp_folder)
+        if not FileHandler.check_existing_folder(folder=FileHandler.TEMP_FOLDER):
+            os.mkdir(FileHandler.TEMP_FOLDER)
+        output_path = FileHandler.create_rnd_in_temp(file_extension=".txt")
         subprocess.run(["pdftotext", "-raw", "-nopgbrk", path, output_path])
         list_from_txt_importer = TXTImporter.parse(path=output_path)
         os.remove(output_path)
-        os.rmdir(temp_folder)
+        os.rmdir(FileHandler.TEMP_FOLDER)
         return list_from_txt_importer
 
 

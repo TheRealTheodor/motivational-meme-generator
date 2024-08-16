@@ -10,6 +10,7 @@ from flask import Flask, abort, render_template, request
 
 from MemeGenerator.file_handler import FileHandler
 from MemeGenerator.meme_generator import MemeEngine
+from QuoteEngine.ingestors import Ingestor
 from QuoteEngine.quote_model import QuoteModel
 
 app = Flask(__name__)
@@ -17,10 +18,25 @@ app = Flask(__name__)
 meme = MemeEngine("./static")
 
 
+def list_all_images(folder_path: str = "./_data/photos/dog/") -> List[str]:
+    """List all images available for given path."""
+    img_list = os.listdir(path=folder_path)
+    return [folder_path + img for img in img_list]
+
+
+def list_of_all_available_quotes() -> List[QuoteModel]:
+    """Create list of all available quotes saved in different files."""
+    quotes = []
+    for quote_file in FileHandler.QUOTE_FILES:
+        quotes.extend(Ingestor.parse(quote_file))
+    return quotes
+
+
 def setup() -> Tuple[List[QuoteModel], List[str]]:
     """Load all resources."""
-    quotes = FileHandler.list_of_all_available_quotes()
-    imgs = FileHandler.list_all_images()
+    quotes = list_of_all_available_quotes()
+    imgs = list_all_images()
+
     return quotes, imgs
 
 
@@ -47,18 +63,18 @@ def meme_post():
     """Create a user defined meme."""
     image_url = request.form.get("image_url")
     image_extension = "." + image_url.split(".")[-1]
-    temp_folder = "./tmp/"
     quote = QuoteModel(body=request.form.get("body"), author=request.form.get("author"))
 
     response = requests.get(image_url)
     if response.status_code == 200:
-        os.mkdir(temp_folder)
-        full_path = temp_folder + str(uuid.uuid4()) + image_extension
+        if not FileHandler.check_existing_folder(folder=FileHandler.TEMP_FOLDER):
+            os.mkdir(FileHandler.TEMP_FOLDER)
+        full_path = FileHandler.create_rnd_in_temp(file_extension=image_extension)
         with open(full_path, "wb") as outfile:
             outfile.write(response.content)
         path = meme.make_meme(image_path=full_path, quote=quote)
         os.remove(full_path)
-        os.rmdir(temp_folder)
+        os.rmdir(FileHandler.TEMP_FOLDER)
     else:
         abort(code=response.status_code)
     return render_template("meme.html", path=path)

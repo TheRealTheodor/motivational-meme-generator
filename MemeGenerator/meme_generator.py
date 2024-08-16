@@ -6,6 +6,7 @@ import uuid
 
 from PIL import Image, ImageDraw, ImageFont
 
+from MemeGenerator.file_handler import FileHandler
 from QuoteEngine.quote_model import QuoteModel
 
 
@@ -18,17 +19,6 @@ class MemeEngine:
         :param output_folder: Path string to folder where the meme will be saved.
         """
         self._output_folder = output_folder
-
-    def check_existing_folder(self) -> bool:
-        """Check if the output folder of instance of MemeEngine exists."""
-        listed_files = os.listdir()
-        if self._output_folder.removeprefix("./") in listed_files:
-            return True
-        return False
-
-    def create_folder(self) -> None:
-        """Create output folder."""
-        os.mkdir(self._output_folder)
 
     def make_meme(self, image_path: str, quote: QuoteModel, width=500) -> str:
         """Create a meme with body of quote and its author.
@@ -57,9 +47,9 @@ class MemeEngine:
             font=my_font,
             fill=(255, 255, 255),
         )
-        if self.check_existing_folder():
+        if FileHandler.check_existing_folder(folder=self._output_folder):
             resized_image.save(path_to_output_image)
         else:
-            self.create_folder()
+            FileHandler.create_folder(folder=self._output_folder)
             resized_image.save(path_to_output_image)
         return path_to_output_image

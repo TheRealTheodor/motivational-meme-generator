@@ -2,10 +2,7 @@
 
 import os
 import random
-from typing import List
-
-from QuoteEngine.ingestors import Ingestor
-from QuoteEngine.quote_model import QuoteModel
+import uuid
 
 
 class FileHandler:
@@ -18,6 +15,8 @@ class FileHandler:
         "./_data/DogQuotes/DogQuotesCSV.csv",
     ]
 
+    TEMP_FOLDER = "./tmp"
+
     @classmethod
     def pick_image(cls, folder_path: str) -> str:
         """Pick random image for given folder path."""
@@ -29,15 +28,19 @@ class FileHandler:
         return img
 
     @classmethod
-    def list_all_images(cls, folder_path: str = "./_data/photos/dog/") -> List[str]:
-        """List all images available for given path."""
-        img_list = os.listdir(path=folder_path)
-        return [folder_path + img for img in img_list]
+    def check_existing_folder(cls, folder: str) -> bool:
+        """Check if the output folder of instance of MemeEngine exists."""
+        listed_files = os.listdir()
+        if folder.removeprefix("./") in listed_files:
+            return True
+        return False
 
     @classmethod
-    def list_of_all_available_quotes(cls) -> List[QuoteModel]:
-        """Create list of all available quotes saved in different files."""
-        quotes = []
-        for quote_file in cls.QUOTE_FILES:
-            quotes.extend(Ingestor.parse(quote_file))
-        return quotes
+    def create_folder(cls, folder: str) -> None:
+        """Create output folder."""
+        os.mkdir(folder)
+
+    @classmethod
+    def create_rnd_in_temp(cls, file_extension: str) -> str:
+        """Create random file name with given extension in temp folder."""
+        return cls.TEMP_FOLDER + str(uuid.uuid4()) + file_extension
