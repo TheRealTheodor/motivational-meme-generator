@@ -11,9 +11,9 @@ To run this project you will need to create a virtual environment with python de
 
 # Module overview
 
-1. file_handler.py - Module containing a class for working with files for this project.
-2. meme_generator.py - Module containing a class for creating a meme.
-3. ingestors.py - Module containing abstract class and its children classes for loading quotes from different types of files.
-4. quote_model.py - Module containing model quote class that is being used in other classes in this project.
-5. app.py - Python file containing a basic flask app.
-6. main.py - Python file containing a basic script for generating memes from CLI with additional options.
+1. `file_handler.py` - Module containing a class for working with files for this project.
+2. `meme_generator.py` - Module containing a class for creating a meme.
+3. `ingestors.py` - Module containing abstract class and its children classes for loading quotes from different types of files.
+4. `quote_model.py` - Module containing model quote class that is being used in other classes in this project.
+5. `app.py` - Python file containing a basic flask app.
+6. `main.py` - Python file containing a basic script for generating memes from CLI with additional options.
