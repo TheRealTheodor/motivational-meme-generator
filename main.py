@@ -46,7 +46,7 @@ if __name__ == "__main__":
     arparser.add_argument(
         "--author",
         required=False,
-        help="An author if quote. Required if --body is used.",
+        help="An author of quote. Required if --body is used.",
     )
     args = arparser.parse_args()
     print(generate_meme(path=args.path, body=args.body, author=args.author))
